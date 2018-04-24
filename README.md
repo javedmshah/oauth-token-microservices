@@ -48,5 +48,6 @@ forgerock-docker-public.bintray.io/microservice/authn              1.0.0-SNAPSHO
 forgerock-docker-public.bintray.io/microservice/token-validation   1.0.0-SNAPSHOT      09cbfc694ddc        3 days ago          112MB
 ```
 
-#Token Exchange using AM as Policy
+# Token Exchange using AM as Policy
+
 Please note that the configuration for token exchange relies on the policy artifacts defined in [this](https://github.com/javedmshah/token-exchange-microservice) repository
