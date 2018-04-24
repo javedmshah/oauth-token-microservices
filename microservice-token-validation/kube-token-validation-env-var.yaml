@@ -1,5 +1,5 @@
 #
-# Copyright 2018 Javed Shah All Rights Reserved
+# Copyright 2018 Javed Shah 
 #
 
 # Kubernetes metadata sample that uses environment variables to configure the service.
