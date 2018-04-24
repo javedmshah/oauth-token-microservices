@@ -1,0 +1,73 @@
+#
+# Copyright 2018 Javed Shah All Rights Reserved
+#
+# Use of this code requires a commercial software license with ForgeRock AS.
+# or with one of its affiliates. All use shall be exclusively subject
+# to such license between the licensee and ForgeRock AS.
+#
+
+# Kubernetes metadata sample that uses environment variables to configure the service.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ms-token-validation
+  labels:
+    name: ms-token-validation
+spec:
+  hostAliases:
+  - ip: "192.168.99.1"
+    hostnames:
+    - "openam.example.com"
+  containers:
+  - name: ms-token-validation
+    image: forgerock-docker-public.bintray.io/microservice/token-validation:1.0.0-SNAPSHOT
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 256Mi
+    env:
+    - name: INFO_ACCOUNT_PASSWORD
+      value: info
+    - name: METRICS_ACCOUNT_PASSWORD
+      value: metrics
+    - name: INTROSPECTION_REQUIRED_SCOPE
+      value: introspect
+    - name: INTROSPECTION_SERVICES
+      value: json,openam
+    - name: ISSUER_JWK_STORE
+      value: json
+    - name: ISSUER_JWK_JSON_ISSUER_URI
+      value: https://example.com
+    - name: ISSUER_JWK_JSON_JWK_BASE64
+      value: ewogICAgImtpZCIgOiAibXlfaG1hY19rZXkiLAogICAgImt0eSIgOiAiT0NUIiwKICAgICJhbGciIDogIkhTMjU2IiwKICAgICJrIiA6ICJGZEZZRnpFUndDMnVDQkI0NnBaUWk0R0c4NUx1alI4b2J0LUtXUkJJQ1ZRIgp9Cg==
+    - name: INTROSPECTION_OPENAM_CLIENT_ID
+      value: myoauthclient
+    - name: INTROSPECTION_OPENAM_CLIENT_SECRET
+      value: myoauthclient
+    - name: INTROSPECTION_OPENAM_URL
+      value: http://openam.example.com:8080/openam/oauth2/realms/root/realms/test/introspect
+    - name: INTROSPECTION_OPENAM_ID_TOKEN_INFO_URL
+      value: http://openam.example.com:8080/openam/oauth2/realms/root/realms/test/idtokeninfo
+    - name: INTROSPECTION_OPENAM_SESSION_URL
+      value: http://openam.example.com:8080/openam/json/sessions    
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-token-validation
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      nodePort: 30103
+  selector:
+    name: ms-token-validation
