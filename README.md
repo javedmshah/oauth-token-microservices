@@ -13,7 +13,14 @@ Switch to using the minikube docker daemon:
 ```shell
 eval $(minikube docker-env)
 ```
-You can pull, and view images cached locally, view running containers, etc using the docker commands.
+You can pull, and view images cached locally, view running containers, etc using the docker commands shown below.
+However, it is strongly recommended to use the yaml files provided herein since these setup the microservices configuration using environment variables.
+
+```shell
+docker pull forgerock-docker-public.bintray.io/microservice/authn:1.0.0-SNAPSHOT
+docker pull forgerock-docker-public.bintray.io/microservice/token-validation:1.0.0-SNAPSHOT
+docker pull forgerock-docker-public.bintray.io/microservice/token-exchange:1.0.0-SNAPSHOT
+```
 
 Commands you need to run to deploy the containers are included here.
 
