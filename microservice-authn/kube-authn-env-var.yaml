@@ -1,0 +1,63 @@
+#
+# Copyright Javed Shah. All Rights Reserved
+#
+# Use of this code requires a commercial software license with ForgeRock AS.
+# or with one of its affiliates. All use shall be exclusively subject
+# to such license between the licensee and ForgeRock AS.
+#
+
+# Kubernetes metadata sample that uses environment variables to configure the service, and uses json
+# for Client Credentials Store.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ms-authn
+  labels:
+    name: ms-authn
+spec:
+  containers:
+  - name: ms-authn
+    image: forgerock-docker-public.bintray.io/microservice/authn:1.0.0-SNAPSHOT
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 256Mi
+    env:
+    - name: INFO_ACCOUNT_PASSWORD
+      value: info
+    - name: METRICS_ACCOUNT_PASSWORD
+      value: metrics
+    - name: CLIENT_CREDENTIALS_STORE
+      value: json
+    - name: CLIENT_SECRET_SECURITY_SCHEME
+      value: none
+    - name: TOKEN_DEFAULT_EXPIRATION_SECONDS
+      value: "3600"
+    - name: TOKEN_ISSUER
+      value: https://example.com
+    - name: TOKEN_AUDIENCE
+      value: https://resource.example.com,https://validation.example.com
+    - name: TOKEN_SUPPORTED_ADDITIONAL_CLAIMS
+      value: attrVal1
+    - name: TOKEN_SIGNATURE_JWK_BASE64
+      value: ewogICAgImtpZCIgOiAibXlfaG1hY19rZXkiLAogICAgImt0eSIgOiAiT0NUIiwKICAgICJhbGciIDogIkhTMjU2IiwKICAgICJrIiA6ICJGZEZZRnpFUndDMnVDQkI0NnBaUWk0R0c4NUx1alI4b2J0LUtXUkJJQ1ZRIgp9Cg==
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-authn
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      nodePort: 30101
+  selector:
+    name: ms-authn
