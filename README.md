@@ -29,3 +29,14 @@ Deploy the Token Exchange microservice container :
 ```shell
 kubectl create -f kube-exchange-env-var.yaml
 ```
+
+The images should be pulled from the public bintray repository and show up with the command:
+```shell
+docker image list
+```
+```
+REPOSITORY                                                         TAG                 IMAGE ID            CREATED             SIZE
+forgerock-docker-public.bintray.io/microservice/token-exchange     1.0.0-SNAPSHOT      45773f9f05a1        2 days ago          112MB
+forgerock-docker-public.bintray.io/microservice/authn              1.0.0-SNAPSHOT      16f9f07bdd0a        2 days ago          126MB
+forgerock-docker-public.bintray.io/microservice/token-validation   1.0.0-SNAPSHOT      09cbfc694ddc        3 days ago          112MB
+```
