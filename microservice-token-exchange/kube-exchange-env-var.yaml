@@ -1,0 +1,93 @@
+#
+# Copyright 2018 Javed Shah. All Rights Reserved
+#
+# Use of this code requires a commercial software license with ForgeRock AS.
+# or with one of its affiliates. All use shall be exclusively subject
+# to such license between the licensee and ForgeRock AS.
+#
+
+# Kubernetes metadata sample that uses environment variables to configure the service.
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ms-token-exchange
+  labels:
+    name: ms-token-exchange
+spec:
+  hostAliases:
+  - ip: "192.168.99.1"
+    hostnames:
+    - "openam.example.com"
+#  imagePullSecrets:
+#  - name: bintraykey  
+  containers:
+  - name: ms-token-exchange
+    image: forgerock-docker-public.bintray.io/microservice/token-exchange:1.0.0-SNAPSHOT
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 1000m
+        memory: 256Mi
+    env:
+    - name: INFO_ACCOUNT_PASSWORD
+      value: info
+    - name: METRICS_ACCOUNT_PASSWORD
+      value: metrics
+    - name: TOKEN_EXCHANGE_REQUIRED_SCOPE
+      value: exchange
+    - name: TOKEN_EXCHANGE_POLICIES
+      value: openam,jwt,json
+    - name: ISSUER_JWK_STORE
+      value: json
+    - name: ISSUER_JWK_JSON_ISSUER_URI
+      value: https://example.com
+    - name: ISSUER_JWK_JSON_JWK_BASE64
+      value: ewogICAgImtpZCIgOiAibXlfaG1hY19rZXkiLAogICAgImt0eSIgOiAiT0NUIiwKICAgICJhbGciIDogIkhTMjU2IiwKICAgICJrIiA6ICJGZEZZRnpFUndDMnVDQkI0NnBaUWk0R0c4NUx1alI4b2J0LUtXUkJJQ1ZRIgp9Cg==
+    - name: TOKEN_ISSUER
+      value: https://frtokenexchange.example.com
+    - name: TOKEN_SIGNATURE_JWK_BASE64
+      value: ewogICAgImtpZCIgOiAibXlfaG1hY19rZXkiLAogICAgImt0eSIgOiAiT0NUIiwKICAgICJhbGciIDogIkhTMjU2IiwKICAgICJrIiA6ICJGZEZZRnpFUndDMnVDQkI0NnBaUWk0R0c4NUx1alI4b2J0LUtXUkJJQ1ZRIgp9Cg==
+    - name: EXCHANGE_JWT_INTROSPECT_URL
+      value: http://192.168.99.100:30103/service/introspect
+    - name: EXCHANGE_OPENAM_AUTH_SUBJECT_ID
+      value: amadmin
+    - name: EXCHANGE_OPENAM_AUTH_SUBJECT_PASSWORD
+      value: cangetinam
+    - name: EXCHANGE_OPENAM_AUTH_URL
+      value: http://openam.example.com:8080/openam/json/realms/root/authenticate
+    - name: EXCHANGE_OPENAM_POLICY_URL
+      value: http://openam.example.com:8080/openam/json/realms/root/policies
+    - name: EXCHANGE_OPENAM_POLICY_SET_ID
+      value: resource_policies
+    - name: EXCHANGE_OPENAM_POLICY_AUDIENCE_ATTR
+      value: aud
+    - name: EXCHANGE_OPENAM_POLICY_SCOPE_ATTR
+      value: scp
+    - name: EXCHANGE_OPENAM_POLICY_SUBJECT_ATTR
+      value: uid
+    - name: EXCHANGE_OPENAM_POLICY_ALLOWED_ACTORS_ATTR
+      value: may_actors
+    - name: EXCHANGE_OPENAM_POLICY_COPY_ADDITIONAL_ATTR
+      value: "true"
+    - name: ISSUER_JWK_OPENID_URL
+      value: http://openam.example.com:8080/openam/oauth2/.well-known/openid-configuration
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-token-exchange
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      nodePort: 30104
+  selector:
+    name: ms-token-exchange
