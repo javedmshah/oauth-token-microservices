@@ -1,0 +1,2864 @@
+{
+	"info": {
+		"_postman_id": "8c08799a-7e09-4ed7-b879-bd6dfb94c09c",
+		"name": "MICRO-SERVICES",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Validation of JWT AT",
+			"description": null,
+			"item": [
+				{
+					"name": "MS AuthN - client1 w/ default,example scopes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ACCESS_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MTpjbGllbnQx"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "MS AuthN- client3 w/ exchange, introspect scopes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"BEARER_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MzpjbGllbnQz"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "MS Validation- access_token <docker>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token_type_hint",
+									"value": "access_token",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MS_VALIDATION_URL}}/service/introspect",
+							"host": [
+								"{{MS_VALIDATION_URL}}"
+							],
+							"path": [
+								"service",
+								"introspect"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -d \\\"token_type_hint=id_token&token={{ID_TOKEN}}\\\" -H \\\"Authorization: Bearer {{BEARER_TOKEN}}\\\" -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:28080/service/introspect\\\""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Validation of stateful AM AT - realm /test",
+			"description": null,
+			"item": [
+				{
+					"name": "MS AuthN- client3 w/ exchange, introspect scopes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"BEARER_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MzpjbGllbnQz"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "AM- issue ACCESS_TOKEN password grant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AM_STATEFUL_ACCESS_TOKEN\", jsonData.access_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bXlvaWRjY2xpZW50MTpteW9pZGNjbGllbnQx"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "user.1",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "cn mail profile",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/openam/oauth2/realms/test/access_token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"test",
+								"access_token"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl --request POST  --user \\\"myoidcclient1:myoidcclient1\\\" --data \\\"grant_type=client_credentials&scope=openid%20resource_read\\\" \\\"http://localhost:8080/openam/oauth2/realms/root/access_token\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "user ssotoken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AdmintokenId\", jsonData.tokenId);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-OpenAM-Username",
+								"value": "user.105"
+							},
+							{
+								"key": "X-OpenAM-Password",
+								"value": "password"
+							},
+							{
+								"key": "Accept-API-Version",
+								"value": "resource=2.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/json/realms/root/realms/test/authenticate",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"json",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AM- reponse_type code grant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "47b57ad4-2b43-4131-97be-55ce7d2c80e2",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"AUTH_CODE\", postman.getResponseHeader(\"Location\").split('code=')[1].split('&')[0]);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "response_type",
+									"value": "code",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "profile",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://www.example.com",
+									"type": "text"
+								},
+								{
+									"key": "csrf",
+									"value": "{{AdmintokenId}}",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "myoauthclient",
+									"type": "text"
+								},
+								{
+									"key": "decision",
+									"value": "allow",
+									"type": "text"
+								},
+								{
+									"key": "save_consent",
+									"value": "on",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/oauth2/realms/root/realms/test/authorize?response_type=code&scope=profile&redirect_uri=http://www.example.com&client_id=myoauthclient",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "response_type",
+									"value": "code"
+								},
+								{
+									"key": "scope",
+									"value": "profile"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://www.example.com"
+								},
+								{
+									"key": "client_id",
+									"value": "myoauthclient"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl --request POST  --user \\\"myoidcclient1:myoidcclient1\\\" --data \\\"grant_type=client_credentials&scope=openid%20resource_read\\\" \\\"http://localhost:8080/openam/oauth2/realms/root/access_token\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "AM- issue ACCESS_TOKEN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "805cf9a8-abc9-4355-9f96-48902aea8f9e",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AM_CODEGRANT_ACCESS_TOKEN\", jsonData.access_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://www.example.com",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "{{AUTH_CODE}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "myoauthclient",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "myoauthclient",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/oauth2/realms/root/realms/test/access_token",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"access_token"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl --request POST  --user \\\"myoidcclient1:myoidcclient1\\\" --data \\\"grant_type=client_credentials&scope=openid%20resource_read\\\" \\\"http://localhost:8080/openam/oauth2/realms/root/access_token\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "RESTful AM validate stateful AT",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54fbd79c-46d8-4af3-b00f-64566b1534ef",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "myoauthclient",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "myoauthclient",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/oauth2/realms/root/realms/test/introspect?token={{AM_CODEGRANT_ACCESS_TOKEN}}",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"introspect"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{AM_CODEGRANT_ACCESS_TOKEN}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MS Validation- AM_Stateful_Access_Token <docker>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token_type_hint",
+									"value": "access_token",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "{{AM_CODEGRANT_ACCESS_TOKEN}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MS_VALIDATION_URL}}/service/introspect",
+							"host": [
+								"{{MS_VALIDATION_URL}}"
+							],
+							"path": [
+								"service",
+								"introspect"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -d \\\"token_type_hint=id_token&token={{ID_TOKEN}}\\\" -H \\\"Authorization: Bearer {{BEARER_TOKEN}}\\\" -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:28080/service/introspect\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "MS Validation- AM_Stateful_Access_Token <localhost>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token_type_hint",
+									"value": "access_token",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "{{AM_CODEGRANT_ACCESS_TOKEN}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MS_VALIDATION_URL}}/service/introspect",
+							"host": [
+								"{{MS_VALIDATION_URL}}"
+							],
+							"path": [
+								"service",
+								"introspect"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -d \\\"token_type_hint=id_token&token={{ID_TOKEN}}\\\" -H \\\"Authorization: Bearer {{BEARER_TOKEN}}\\\" -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:28080/service/introspect\\\""
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c2905659-0431-41d3-876e-b30e803a9c48",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ac172d04-2d71-428c-940d-363cb6799aa9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Validation of ssotoken",
+			"description": null,
+			"item": [
+				{
+					"name": "MS AuthN- client3 w/ exchange, introspect scopes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"BEARER_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MzpjbGllbnQz"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "user ssotoken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8bf8163e-4cf6-4aeb-bfa0-f7f19a2bbe31",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ssoTokenId\", jsonData.tokenId);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-OpenAM-Username",
+								"value": "user.105"
+							},
+							{
+								"key": "X-OpenAM-Password",
+								"value": "password"
+							},
+							{
+								"key": "Accept-API-Version",
+								"value": "resource=2.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/json/realms/root/realms/test/authenticate",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"json",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MS Validation- AM ssoToken <docker>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token_type_hint",
+									"value": "openam_sso",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "{{ssoTokenId}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MS_VALIDATION_URL}}/service/introspect",
+							"host": [
+								"{{MS_VALIDATION_URL}}"
+							],
+							"path": [
+								"service",
+								"introspect"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -d \\\"token_type_hint=id_token&token={{ID_TOKEN}}\\\" -H \\\"Authorization: Bearer {{BEARER_TOKEN}}\\\" -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:28080/service/introspect\\\""
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c2905659-0431-41d3-876e-b30e803a9c48",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ac172d04-2d71-428c-940d-363cb6799aa9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Validation of ID TOKEN - realm /test",
+			"description": null,
+			"item": [
+				{
+					"name": "MS AuthN- client3 w/ exchange, introspect scopes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"BEARER_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MzpjbGllbnQz"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "user ssotoken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aec1afc3-2371-42e5-95f3-ae2b9551f7ae",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ssotokenId\", jsonData.tokenId);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-OpenAM-Username",
+								"value": "user.105"
+							},
+							{
+								"key": "X-OpenAM-Password",
+								"value": "password"
+							},
+							{
+								"key": "Accept-API-Version",
+								"value": "resource=2.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/json/realms/root/realms/test/authenticate",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"json",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AM- reponse_type code grant",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "47b57ad4-2b43-4131-97be-55ce7d2c80e2",
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"AUTH_CODE\", postman.getResponseHeader(\"Location\").split('code=')[1].split('&')[0]);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "iPlanetDirectoryPro",
+								"value": "{{ssotokenId}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "response_type",
+									"value": "code",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid profile",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://www.example.com",
+									"type": "text"
+								},
+								{
+									"key": "csrf",
+									"value": "{{ssotokenId}}",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "myoauthclient",
+									"type": "text"
+								},
+								{
+									"key": "decision",
+									"value": "allow",
+									"type": "text"
+								},
+								{
+									"key": "save_consent",
+									"value": "on",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/oauth2/realms/root/realms/test/authorize?response_type=code&scope=profile openid&redirect_uri=http://www.example.com&client_id=myoauthclient",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "response_type",
+									"value": "code"
+								},
+								{
+									"key": "scope",
+									"value": "profile openid"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://www.example.com"
+								},
+								{
+									"key": "client_id",
+									"value": "myoauthclient"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl --request POST  --user \\\"myoidcclient1:myoidcclient1\\\" --data \\\"grant_type=client_credentials&scope=openid%20resource_read\\\" \\\"http://localhost:8080/openam/oauth2/realms/root/access_token\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "AM- issue ACCESS_TOKEN + ID_TOKEN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3140d76f-f462-420c-abab-d8deec9a3d81",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AM_CODEGRANT_ACCESS_TOKEN1\", jsonData.access_token);",
+									"postman.setEnvironmentVariable(\"AM_CODEGRANT_ID_TOKEN\", jsonData.id_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "myoauthclient",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "myoauthclient",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://www.example.com",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "{{AUTH_CODE}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid profile",
+									"description": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/oauth2/realms/root/realms/test/access_token",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"access_token"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl --request POST  --user \\\"myoidcclient1:myoidcclient1\\\" --data \\\"grant_type=client_credentials&scope=openid%20resource_read\\\" \\\"http://localhost:8080/openam/oauth2/realms/root/access_token\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "RESTful AM validate ID TOKEN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54fbd79c-46d8-4af3-b00f-64566b1534ef",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "myoauthclient",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "myoauthclient",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id_token",
+									"value": "{{AM_CODEGRANT_ID_TOKEN}}",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://openam.example.com:8080/openam/oauth2/realms/root/realms/test/idtokeninfo",
+							"protocol": "http",
+							"host": [
+								"openam",
+								"example",
+								"com"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"root",
+								"realms",
+								"test",
+								"idtokeninfo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MS Validation- AM_ID_TOKEN <docker>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token_type_hint",
+									"value": "id_token",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "{{AM_CODEGRANT_ID_TOKEN}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MS_VALIDATION_URL}}/service/introspect",
+							"host": [
+								"{{MS_VALIDATION_URL}}"
+							],
+							"path": [
+								"service",
+								"introspect"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -d \\\"token_type_hint=id_token&token={{ID_TOKEN}}\\\" -H \\\"Authorization: Bearer {{BEARER_TOKEN}}\\\" -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:28080/service/introspect\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "MS Validation- AM_ID_TOKEN <localhost>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "token_type_hint",
+									"value": "id_token",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "{{AM_CODEGRANT_ID_TOKEN}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:28080/service/introspect",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "28080",
+							"path": [
+								"service",
+								"introspect"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -d \\\"token_type_hint=id_token&token={{ID_TOKEN}}\\\" -H \\\"Authorization: Bearer {{BEARER_TOKEN}}\\\" -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:28080/service/introspect\\\""
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c2905659-0431-41d3-876e-b30e803a9c48",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "ac172d04-2d71-428c-940d-363cb6799aa9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Exchange using AM policy with ssotoken (impersonation)",
+			"description": null,
+			"item": [
+				{
+					"name": "MS AuthN- client3 w/ exchange, introspect scopes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"BEARER_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MzpjbGllbnQz"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "AM ssotoken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"ssotoken\", jsonData.tokenId);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-OpenAM-Username",
+								"value": "user.0"
+							},
+							{
+								"key": "X-OpenAM-Password",
+								"value": "password"
+							},
+							{
+								"key": "Accept-API-Version",
+								"value": "resource=2.0, protocol=1.0"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/openam/json/realms/root/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"json",
+								"realms",
+								"root",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MS TokenExchange- ssotoken case",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AM_X_ACCESS_TOKEN\", jsonData.access_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "urn:ietf:params:oauth:grant-type:token-exchange",
+									"type": "text"
+								},
+								{
+									"key": "resource",
+									"value": "http://scopes.example.com:*/*",
+									"type": "text"
+								},
+								{
+									"key": "subject_token",
+									"value": "{{ssotoken}}",
+									"type": "text"
+								},
+								{
+									"key": "subject_token_type",
+									"value": "urn:ietf:params:oauth:token-type:ssoktoken",
+									"type": "text"
+								},
+								{
+									"key": "token_type",
+									"value": "access_token",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MS_EXCHANGE_URL}}/service/tokensts",
+							"host": [
+								"{{MS_EXCHANGE_URL}}"
+							],
+							"path": [
+								"service",
+								"tokensts"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k \\\n    -d \\\"grant_type=urn:ietf:params:oauth:grant-type:token-exchange\\\" \\\n    -d \\\"resource=http://images.example.com:*/*\\\" \\\n    -d \\\"subject_token=$EX_SUBJECT_TOKEN\\\" \\\n    -d \\\"subject_token_type=urn:ietf:params:oauth:token-type:access_token\\\" \\\n    -H \\\"Authorization: Bearer $EX_BEARER_TOKEN\\\" \\\n    -H \\\"Content-Type: application/x-www-form-urlencoded\\\" \\\n    -X POST \\\"http://localhost:38080/service/tokensts\\\""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exchange using AM policy with OIDC may_act (delegation)",
+			"description": null,
+			"item": [
+				{
+					"name": "MS AuthN- client3 w/ exchange, introspect scopes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"BEARER_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MzpjbGllbnQz"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "AM- issue ID_TOKEN for Bob (admin)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AM_BOB_AT_TOKEN\", jsonData.access_token);",
+									"postman.setEnvironmentVariable(\"AM_BOB_ID_TOKEN\", jsonData.id_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bXl1c2VyY2xpZW50MTpteXVzZXJjbGllbnQx"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "user.2",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid profile",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/openam/oauth2/realms/root/access_token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"root",
+								"access_token"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl --request POST  --user \\\"myoidcclient1:myoidcclient1\\\" --data \\\"grant_type=client_credentials&scope=openid%20resource_read\\\" \\\"http://localhost:8080/openam/oauth2/realms/root/access_token\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "AM- issue ID_TOKEN for Alice (user)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AM_ALICE_AT_TOKEN\", jsonData.access_token);",
+									"postman.setEnvironmentVariable(\"AM_ALICE_ID_TOKEN\", jsonData.id_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic bXl1c2VyY2xpZW50MTpteXVzZXJjbGllbnQx"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "user.0",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid profile",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/openam/oauth2/realms/root/access_token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"oauth2",
+								"realms",
+								"root",
+								"access_token"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl --request POST  --user \\\"myoidcclient1:myoidcclient1\\\" --data \\\"grant_type=client_credentials&scope=openid%20resource_read\\\" \\\"http://localhost:8080/openam/oauth2/realms/root/access_token\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "Admin ssotoken for policy eval - example only",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AdmintokenId\", jsonData.tokenId);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "X-OpenAM-Username",
+								"value": "amadmin"
+							},
+							{
+								"key": "X-OpenAM-Password",
+								"value": "cangetinam"
+							},
+							{
+								"key": "Accept-API-Version",
+								"value": "resource=2.1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/openam/json/realms/root/authenticate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"json",
+								"realms",
+								"root",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Policy Evaluation- example only",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//var advice = JSON.parse(responseBody)[0].advices.TransactionConditionAdvice[0];",
+									"//postman.setGlobalVariable(\"advice\", encodeURIComponent(advice));",
+									"//postman.setGlobalVariable(\"transactionId\", advice.split(\"#\")[0]);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "iPlanetDirectoryPro",
+								"value": "{{AdmintokenId}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-API-Version",
+								"value": "resource=2.1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"subject\" : {\n  \t\"ssoToken\" : \"{{AM_ALICE_ID_TOKEN}}\"\n\t},\n  \"application\" : \"delegation_policies\",\n  \"resources\" : [ \"mayact\" ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/openam/json/realms/root/policies?_action=evaluate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"json",
+								"realms",
+								"root",
+								"policies"
+							],
+							"query": [
+								{
+									"key": "_action",
+									"value": "evaluate"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "3796402d-877c-4dfa-9766-7449d5fe47f8",
+							"name": "self-authn-18080-oem",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "iPlanetDirectoryPro",
+										"value": "AQIC5wM2LY4SfcwQ4X20hrmhRxnBn8BB6fERb4AKVLvvw2Y.*AAJTSQACMDEAAlNLABM0NzA5NTE5MjIxNDg5NjI1OTgyAAJTMQAA*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"resources\": [\n        \"authn/self\"\n    ],\n    \"application\": \"AuthnPolicySet_a\",\n    \"subject\": { \"ssoToken\": \"AQIC5wM2LY4SfcwQ4X20hrmhRxnBn8BB6fERb4AKVLvvw2Y.*AAJTSQACMDEAAlNLABM0NzA5NTE5MjIxNDg5NjI1OTgyAAJTMQAA*\"}\n    \n}"
+								},
+								"url": {
+									"raw": "http://ec2-54-67-72-146.us-west-1.compute.amazonaws.com:18080/openam/json/policies?_action=evaluate",
+									"protocol": "http",
+									"host": [
+										"ec2-54-67-72-146",
+										"us-west-1",
+										"compute",
+										"amazonaws",
+										"com"
+									],
+									"port": "18080",
+									"path": [
+										"openam",
+										"json",
+										"policies"
+									],
+									"query": [
+										{
+											"key": "_action",
+											"value": "evaluate"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"header": [
+								{
+									"name": "Cache-Control",
+									"key": "Cache-Control",
+									"value": "no-cache",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"name": "Content-API-Version",
+									"key": "Content-API-Version",
+									"value": "resource=2.0",
+									"description": "Custom header"
+								},
+								{
+									"name": "Content-Type",
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "Date",
+									"key": "Date",
+									"value": "Mon, 26 Oct 2015 16:16:05 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "Server",
+									"key": "Server",
+									"value": "Apache-Coyote/1.1",
+									"description": "A name for the server"
+								},
+								{
+									"name": "Transfer-Encoding",
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								}
+							],
+							"cookie": [],
+							"body": "[{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/self\",\"actions\":{\"modify\":true,\"view\":true},\"attributes\":{\"cn\":[\"Javed Shah\"],\"x\":[\"y\"]}}]"
+						},
+						{
+							"id": "b99bfc2e-a2e5-4133-97d5-adb641bf4bfd",
+							"name": "one only",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "iPlanetDirectoryPro",
+										"value": "AQIC5wM2LY4SfcxNyJUJO0JOmOcFdmXv1TMlQOgCPK9QXKc.*AAJTSQACMDEAAlNLABQtODM4NjgxNTcyOTM1ODc1NjEwNgACUzEAAA..*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"resources\": [\n        \"authn/view\", \"authn/self\"\n    ],\n    \"application\": \"AuthnPolicySet_a\",\n    \"subject\": { \"ssoToken\": \n    \"AQIC5wM2LY4SfcxNyJUJO0JOmOcFdmXv1TMlQOgCPK9QXKc.*AAJTSQACMDEAAlNLABQtODM4NjgxNTcyOTM1ODc1NjEwNgACUzEAAA..*\"}\n    \n}"
+								},
+								"url": {
+									"raw": "http://ec2-54-67-72-146.us-west-1.compute.amazonaws.com:18080/openam/json/policies?_action=evaluate",
+									"protocol": "http",
+									"host": [
+										"ec2-54-67-72-146",
+										"us-west-1",
+										"compute",
+										"amazonaws",
+										"com"
+									],
+									"port": "18080",
+									"path": [
+										"openam",
+										"json",
+										"policies"
+									],
+									"query": [
+										{
+											"key": "_action",
+											"value": "evaluate"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"header": [
+								{
+									"name": "Cache-Control",
+									"key": "Cache-Control",
+									"value": "no-cache",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"name": "Content-API-Version",
+									"key": "Content-API-Version",
+									"value": "resource=2.0",
+									"description": "Custom header"
+								},
+								{
+									"name": "Content-Type",
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "Date",
+									"key": "Date",
+									"value": "Tue, 27 Oct 2015 16:00:31 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "Server",
+									"key": "Server",
+									"value": "Apache-Coyote/1.1",
+									"description": "A name for the server"
+								},
+								{
+									"name": "Transfer-Encoding",
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								}
+							],
+							"cookie": [],
+							"body": "[{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/self\",\"actions\":{\"modify\":true,\"view\":true},\"attributes\":{\"cn\":[\"Javed Shah\"],\"x\":[\"y\"]}},{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/view\",\"actions\":{},\"attributes\":{}}]"
+						},
+						{
+							"id": "19fceedb-7655-45e8-b579-47b38b67b979",
+							"name": "both",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "iPlanetDirectoryPro",
+										"value": "AQIC5wM2LY4SfcxNyJUJO0JOmOcFdmXv1TMlQOgCPK9QXKc.*AAJTSQACMDEAAlNLABQtODM4NjgxNTcyOTM1ODc1NjEwNgACUzEAAA..*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"resources\": [\n        \"authn/view\", \"authn/self\"\n    ],\n    \"application\": \"AuthnPolicySet_a\",\n    \"subject\": { \"ssoToken\": \n    \"AQIC5wM2LY4SfcxNyJUJO0JOmOcFdmXv1TMlQOgCPK9QXKc.*AAJTSQACMDEAAlNLABQtODM4NjgxNTcyOTM1ODc1NjEwNgACUzEAAA..*\"}\n    \n}"
+								},
+								"url": {
+									"raw": "http://ec2-54-67-72-146.us-west-1.compute.amazonaws.com:18080/openam/json/policies?_action=evaluate",
+									"protocol": "http",
+									"host": [
+										"ec2-54-67-72-146",
+										"us-west-1",
+										"compute",
+										"amazonaws",
+										"com"
+									],
+									"port": "18080",
+									"path": [
+										"openam",
+										"json",
+										"policies"
+									],
+									"query": [
+										{
+											"key": "_action",
+											"value": "evaluate"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"header": [
+								{
+									"name": "Cache-Control",
+									"key": "Cache-Control",
+									"value": "no-cache",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"name": "Content-API-Version",
+									"key": "Content-API-Version",
+									"value": "resource=2.0",
+									"description": "Custom header"
+								},
+								{
+									"name": "Content-Type",
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "Date",
+									"key": "Date",
+									"value": "Tue, 27 Oct 2015 15:58:12 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "Server",
+									"key": "Server",
+									"value": "Apache-Coyote/1.1",
+									"description": "A name for the server"
+								},
+								{
+									"name": "Transfer-Encoding",
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								}
+							],
+							"cookie": [],
+							"body": "[{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/self\",\"actions\":{\"modify\":true,\"view\":true},\"attributes\":{\"cn\":[\"Javed Shah\"],\"x\":[\"y\"]}},{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/view\",\"actions\":{\"modify\":true,\"view\":true},\"attributes\":{\"cn\":[\"Javed Shah\"],\"x\":[\"y\"]}}]"
+						}
+					]
+				},
+				{
+					"name": "Policy Evaluation- example only copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"//var advice = JSON.parse(responseBody)[0].advices.TransactionConditionAdvice[0];",
+									"//postman.setGlobalVariable(\"advice\", encodeURIComponent(advice));",
+									"//postman.setGlobalVariable(\"transactionId\", advice.split(\"#\")[0]);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "iPlanetDirectoryPro",
+								"value": "{{AdmintokenId}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept-API-Version",
+								"value": "resource=2.1"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"subject\" : {\n    \"ssoToken\" : \"{{AdmintokenId}}\"\n  },\n  \"application\" : \"resource_policies\",\n  \"resources\" : [ \"http://scopes.example.com:*/*\" ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/openam/json/realms/root/policies?_action=evaluate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"openam",
+								"json",
+								"realms",
+								"root",
+								"policies"
+							],
+							"query": [
+								{
+									"key": "_action",
+									"value": "evaluate"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "628e08d7-283b-438c-bd20-07a7b8a462a2",
+							"name": "self-authn-18080-oem",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "iPlanetDirectoryPro",
+										"value": "AQIC5wM2LY4SfcwQ4X20hrmhRxnBn8BB6fERb4AKVLvvw2Y.*AAJTSQACMDEAAlNLABM0NzA5NTE5MjIxNDg5NjI1OTgyAAJTMQAA*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"resources\": [\n        \"authn/self\"\n    ],\n    \"application\": \"AuthnPolicySet_a\",\n    \"subject\": { \"ssoToken\": \"AQIC5wM2LY4SfcwQ4X20hrmhRxnBn8BB6fERb4AKVLvvw2Y.*AAJTSQACMDEAAlNLABM0NzA5NTE5MjIxNDg5NjI1OTgyAAJTMQAA*\"}\n    \n}"
+								},
+								"url": {
+									"raw": "http://ec2-54-67-72-146.us-west-1.compute.amazonaws.com:18080/openam/json/policies?_action=evaluate",
+									"protocol": "http",
+									"host": [
+										"ec2-54-67-72-146",
+										"us-west-1",
+										"compute",
+										"amazonaws",
+										"com"
+									],
+									"port": "18080",
+									"path": [
+										"openam",
+										"json",
+										"policies"
+									],
+									"query": [
+										{
+											"key": "_action",
+											"value": "evaluate"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"header": [
+								{
+									"name": "Cache-Control",
+									"key": "Cache-Control",
+									"value": "no-cache",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"name": "Content-API-Version",
+									"key": "Content-API-Version",
+									"value": "resource=2.0",
+									"description": "Custom header"
+								},
+								{
+									"name": "Content-Type",
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "Date",
+									"key": "Date",
+									"value": "Mon, 26 Oct 2015 16:16:05 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "Server",
+									"key": "Server",
+									"value": "Apache-Coyote/1.1",
+									"description": "A name for the server"
+								},
+								{
+									"name": "Transfer-Encoding",
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								}
+							],
+							"cookie": [],
+							"body": "[{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/self\",\"actions\":{\"modify\":true,\"view\":true},\"attributes\":{\"cn\":[\"Javed Shah\"],\"x\":[\"y\"]}}]"
+						},
+						{
+							"id": "25e5cbfd-8589-40c3-8481-10634009ff5b",
+							"name": "one only",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "iPlanetDirectoryPro",
+										"value": "AQIC5wM2LY4SfcxNyJUJO0JOmOcFdmXv1TMlQOgCPK9QXKc.*AAJTSQACMDEAAlNLABQtODM4NjgxNTcyOTM1ODc1NjEwNgACUzEAAA..*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"resources\": [\n        \"authn/view\", \"authn/self\"\n    ],\n    \"application\": \"AuthnPolicySet_a\",\n    \"subject\": { \"ssoToken\": \n    \"AQIC5wM2LY4SfcxNyJUJO0JOmOcFdmXv1TMlQOgCPK9QXKc.*AAJTSQACMDEAAlNLABQtODM4NjgxNTcyOTM1ODc1NjEwNgACUzEAAA..*\"}\n    \n}"
+								},
+								"url": {
+									"raw": "http://ec2-54-67-72-146.us-west-1.compute.amazonaws.com:18080/openam/json/policies?_action=evaluate",
+									"protocol": "http",
+									"host": [
+										"ec2-54-67-72-146",
+										"us-west-1",
+										"compute",
+										"amazonaws",
+										"com"
+									],
+									"port": "18080",
+									"path": [
+										"openam",
+										"json",
+										"policies"
+									],
+									"query": [
+										{
+											"key": "_action",
+											"value": "evaluate"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"header": [
+								{
+									"name": "Cache-Control",
+									"key": "Cache-Control",
+									"value": "no-cache",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"name": "Content-API-Version",
+									"key": "Content-API-Version",
+									"value": "resource=2.0",
+									"description": "Custom header"
+								},
+								{
+									"name": "Content-Type",
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "Date",
+									"key": "Date",
+									"value": "Tue, 27 Oct 2015 16:00:31 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "Server",
+									"key": "Server",
+									"value": "Apache-Coyote/1.1",
+									"description": "A name for the server"
+								},
+								{
+									"name": "Transfer-Encoding",
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								}
+							],
+							"cookie": [],
+							"body": "[{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/self\",\"actions\":{\"modify\":true,\"view\":true},\"attributes\":{\"cn\":[\"Javed Shah\"],\"x\":[\"y\"]}},{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/view\",\"actions\":{},\"attributes\":{}}]"
+						},
+						{
+							"id": "65cb770b-b4ab-41de-b8ee-13ab39403f65",
+							"name": "both",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "iPlanetDirectoryPro",
+										"value": "AQIC5wM2LY4SfcxNyJUJO0JOmOcFdmXv1TMlQOgCPK9QXKc.*AAJTSQACMDEAAlNLABQtODM4NjgxNTcyOTM1ODc1NjEwNgACUzEAAA..*"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"resources\": [\n        \"authn/view\", \"authn/self\"\n    ],\n    \"application\": \"AuthnPolicySet_a\",\n    \"subject\": { \"ssoToken\": \n    \"AQIC5wM2LY4SfcxNyJUJO0JOmOcFdmXv1TMlQOgCPK9QXKc.*AAJTSQACMDEAAlNLABQtODM4NjgxNTcyOTM1ODc1NjEwNgACUzEAAA..*\"}\n    \n}"
+								},
+								"url": {
+									"raw": "http://ec2-54-67-72-146.us-west-1.compute.amazonaws.com:18080/openam/json/policies?_action=evaluate",
+									"protocol": "http",
+									"host": [
+										"ec2-54-67-72-146",
+										"us-west-1",
+										"compute",
+										"amazonaws",
+										"com"
+									],
+									"port": "18080",
+									"path": [
+										"openam",
+										"json",
+										"policies"
+									],
+									"query": [
+										{
+											"key": "_action",
+											"value": "evaluate"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "javascript",
+							"header": [
+								{
+									"name": "Cache-Control",
+									"key": "Cache-Control",
+									"value": "no-cache",
+									"description": "Tells all caching mechanisms from server to client whether they may cache this object. It is measured in seconds"
+								},
+								{
+									"name": "Content-API-Version",
+									"key": "Content-API-Version",
+									"value": "resource=2.0",
+									"description": "Custom header"
+								},
+								{
+									"name": "Content-Type",
+									"key": "Content-Type",
+									"value": "application/json;charset=UTF-8",
+									"description": "The mime type of this content"
+								},
+								{
+									"name": "Date",
+									"key": "Date",
+									"value": "Tue, 27 Oct 2015 15:58:12 GMT",
+									"description": "The date and time that the message was sent"
+								},
+								{
+									"name": "Server",
+									"key": "Server",
+									"value": "Apache-Coyote/1.1",
+									"description": "A name for the server"
+								},
+								{
+									"name": "Transfer-Encoding",
+									"key": "Transfer-Encoding",
+									"value": "chunked",
+									"description": "The form of encoding used to safely transfer the entity to the user. Currently defined methods are: chunked, compress, deflate, gzip, identity."
+								}
+							],
+							"cookie": [],
+							"body": "[{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/self\",\"actions\":{\"modify\":true,\"view\":true},\"attributes\":{\"cn\":[\"Javed Shah\"],\"x\":[\"y\"]}},{\"advices\":{},\"ttl\":9223372036854775807,\"resource\":\"authn/view\",\"actions\":{\"modify\":true,\"view\":true},\"attributes\":{\"cn\":[\"Javed Shah\"],\"x\":[\"y\"]}}]"
+						}
+					]
+				},
+				{
+					"name": "MS TokenExchange- AT for delegation <docker>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ee20db87-7729-412d-8843-5da74b28f07b",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"X_ACCESS_TOKEN\", jsonData.access_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "urn:ietf:params:oauth:grant-type:token-exchange",
+									"type": "text"
+								},
+								{
+									"key": "resource",
+									"value": "http://images.example.com:*/*",
+									"type": "text"
+								},
+								{
+									"key": "subject_token",
+									"value": "{{AM_ALICE_ID_TOKEN}}",
+									"type": "text"
+								},
+								{
+									"key": "subject_token_type",
+									"value": "urn:ietf:params:oauth:token-type:access_token",
+									"type": "text"
+								},
+								{
+									"key": "actor_token",
+									"value": "{{AM_BOB_ID_TOKEN}}",
+									"type": "text"
+								},
+								{
+									"key": "actor_token_type",
+									"value": "urn:ietf:params:oauth:token-type:id_token",
+									"type": "text"
+								},
+								{
+									"key": "token_type",
+									"value": "access_token",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MS_EXCHANGE_URL}}/service/tokensts",
+							"host": [
+								"{{MS_EXCHANGE_URL}}"
+							],
+							"path": [
+								"service",
+								"tokensts"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k \\\n    -d \\\"grant_type=urn:ietf:params:oauth:grant-type:token-exchange\\\" \\\n    -d \\\"resource=http://images.example.com:*/*\\\" \\\n    -d \\\"subject_token=$EX_SUBJECT_TOKEN\\\" \\\n    -d \\\"subject_token_type=urn:ietf:params:oauth:token-type:access_token\\\" \\\n    -H \\\"Authorization: Bearer $EX_BEARER_TOKEN\\\" \\\n    -H \\\"Content-Type: application/x-www-form-urlencoded\\\" \\\n    -X POST \\\"http://localhost:38080/service/tokensts\\\""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exchange using JSON policy",
+			"description": null,
+			"item": [
+				{
+					"name": "MS AuthN- client2 (requester) <docker>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ab99c61c-3aad-4cb4-8d58-7905fa886103",
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"SUBJECT_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MjpjbGllbnQy"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "MS AuthN- client3 w/ exchange, introspect <docker>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"BEARER_TOKEN\", jsonData.access_token);",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic Y2xpZW50MzpjbGllbnQz"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{MS_AUTHN_URL}}/service/access_token?grant_type=client_credentials",
+							"host": [
+								"{{MS_AUTHN_URL}}"
+							],
+							"path": [
+								"service",
+								"access_token"
+							],
+							"query": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials"
+								}
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k -u client3:client3 -H \\\"Content-Type: application/x-www-form-urlencoded\\\" -X POST \\\"http://localhost:18080/service/access_token?grant_type=client_credentials\\\""
+					},
+					"response": []
+				},
+				{
+					"name": "MS TokenExchange- json policy <docker>",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"AM_X_ACCESS_TOKEN\", jsonData.access_token);"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{BEARER_TOKEN}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "urn:ietf:params:oauth:grant-type:token-exchange",
+									"type": "text"
+								},
+								{
+									"key": "resource",
+									"value": "http://resource1.example.com/*",
+									"type": "text"
+								},
+								{
+									"key": "subject_token",
+									"value": "{{SUBJECT_TOKEN}}",
+									"type": "text"
+								},
+								{
+									"key": "subject_token_type",
+									"value": "urn:ietf:params:oauth:token-type:access_token",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{MS_EXCHANGE_URL}}/service/tokensts",
+							"host": [
+								"{{MS_EXCHANGE_URL}}"
+							],
+							"path": [
+								"service",
+								"tokensts"
+							]
+						},
+						"description": "Generated from a curl request: \ncurl -k \\\n    -d \\\"grant_type=urn:ietf:params:oauth:grant-type:token-exchange\\\" \\\n    -d \\\"resource=http://images.example.com:*/*\\\" \\\n    -d \\\"subject_token=$EX_SUBJECT_TOKEN\\\" \\\n    -d \\\"subject_token_type=urn:ietf:params:oauth:token-type:access_token\\\" \\\n    -H \\\"Authorization: Bearer $EX_BEARER_TOKEN\\\" \\\n    -H \\\"Content-Type: application/x-www-form-urlencoded\\\" \\\n    -X POST \\\"http://localhost:38080/service/tokensts\\\""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Ping MS AuthN",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic aW5mbzppbmZv"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{MS_AUTHN_URL}}/authn/info/ping",
+					"host": [
+						"{{MS_AUTHN_URL}}"
+					],
+					"path": [
+						"authn",
+						"info",
+						"ping"
+					]
+				},
+				"description": "Generated from a curl request: \ncurl -X GET --url 'http://localhost:18080/authn/info/ping'"
+			},
+			"response": []
+		},
+		{
+			"name": "Ping MS Validation",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic aW5mbzppbmZv"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{MS_VALIDATION_URL}}/validation/info/ping",
+					"host": [
+						"{{MS_VALIDATION_URL}}"
+					],
+					"path": [
+						"validation",
+						"info",
+						"ping"
+					]
+				},
+				"description": "Generated from a curl request: \ncurl -X GET --url 'http://localhost:18080/authn/info/ping'"
+			},
+			"response": []
+		},
+		{
+			"name": "Ping MS Token Exchange",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic aW5mbzppbmZv"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{MS_EXCHANGE_URL}}/exchange/info/ping",
+					"host": [
+						"{{MS_EXCHANGE_URL}}"
+					],
+					"path": [
+						"exchange",
+						"info",
+						"ping"
+					]
+				},
+				"description": "Generated from a curl request: \ncurl -X GET --url 'http://localhost:18080/authn/info/ping'"
+			},
+			"response": []
+		}
+	]
+}
