@@ -47,7 +47,9 @@ forgerock-docker-public.bintray.io/microservice/token-exchange     1.0.0-SNAPSHO
 forgerock-docker-public.bintray.io/microservice/authn              1.0.0-SNAPSHOT      16f9f07bdd0a        2 days ago          126MB
 forgerock-docker-public.bintray.io/microservice/token-validation   1.0.0-SNAPSHOT      09cbfc694ddc        3 days ago          112MB
 ```
+# AM instance
+Artifacts in this repo expect a local AM instance running on http://openam.example.com:8080/openam
 
 # Token Exchange using AM as Policy
 
-Please note that the configuration for token exchange relies on the policy artifacts defined in [this](https://github.com/javedmshah/token-exchange-microservice) repository
+Please note that the configuration for token exchange relies on the AM policy artifacts defined in [this](https://github.com/javedmshah/token-exchange-microservice) repository
