@@ -49,6 +49,7 @@ forgerock-docker-public.bintray.io/microservice/token-validation   1.0.0-SNAPSHO
 ```
 # AM instance
 Artifacts in this repo expect a local AM instance running on http://openam.example.com:8080/openam
+Amster export of this AM instance is included under https://github.com/javedmshah/forgerock-microservices/blob/master/amster-export.zip
 
 # Token Exchange using AM as Policy
 
