@@ -44,8 +44,8 @@ Likewise, the "introspectionServices" field configures one or more Token Introsp
 
 The following implementations are provided:
 ```
-json : Configured by a JSON file (See the token-validation-introspect-json module README.md file.)
-openam : Proxies introspect calls to OpenAM (See the token-validation-introspect-openam module README.md file.)
+json : Configured by a JSON file 
+openam : Proxies introspect calls to OpenAM 
 ```
 Environment Variables
 The application is configured with example settings by default. Oftentimes you will need to provide values for the following environment variables for more complex demonstrations or for production use.
