@@ -1,7 +1,7 @@
 # About This Repository
 This repository contains an environment variable-based configuration for the ForgeRock Identity Microservices on Kubernetes. The initial configuration can be used with the public bintray docker repository when deploying the early-access microservices docker images.
 
-Use this repository as a starting point for your own custom configuration using environment variables for the ForgeRock Identity Microservices. For more information about specific use cases for Microservices, see the Microservices functional use cases guide in this repository.
+Use this repository as a starting point for your own custom configuration using environment variables for the ForgeRock Identity Microservices. Sequence diagrams are included in this repository. Detailed use case for token exchange with delegation see my blog post [here] (https://forum.forgerock.com/2018/04/token-exchange-and-delegation/).
 
 Samples provided here have been tested with single kubernetes cluster in Minikube. 
 Start minikube:
