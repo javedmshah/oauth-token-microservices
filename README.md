@@ -53,4 +53,4 @@ Amster export of this AM instance is included under https://github.com/javedmsha
 
 # Token Exchange using AM as Policy
 
-Please note that the configuration for token exchange relies on the AM policy artifacts defined in [this](https://github.com/javedmshah/token-exchange-microservice) repository
+Please note that the configuration for token exchange relies on the AM policy artifacts defined in [this](https://github.com/javedmshah/token-exchange-microservice) repository. However the included amster configuration includes all those policy artifacts as well. So no separate download or setup is needed.
