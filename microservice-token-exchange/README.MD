@@ -12,13 +12,10 @@ JSON file backed Token-Exchange Policy implementation, which provides logic that
 Settings
 This Token-Exchange Policy implementation matches requested resource URI "patterns" to a given "audience", which will appear in the generated token. Alternatively, if the token-exchange-request specifies an "audience" but no resource URIs, then this policy will match that audience. Policy rules are not mutually exclusive, in that multiple policies could match for requested resources/audiences, and the result will be merged together for the generated token.
 
-The example JSON configuration can be overridden either by modifying conf/exchangepolicy_json.json or by setting the optional EXCHANGE_POLICY_JSON_CONFIG_PATH environment variable, which is useful in a container environment (e.g., Docker/Kubernetes).
+A sample JSON policy looks like:
 
-{
-    // (optional) path of JSON config file that overrides this config file, and must only contain simple JSON syntax;
-    // property-substitution values and/or inline comments are not allowed
-    "configOverridePath" : "&{EXCHANGE_POLICY_JSON_CONFIG_PATH|}",
-
+``{
+    
     "resources" : [
         {
             // patterns to match against the requested resource (either exact-match, or prefix-match up to first *)
@@ -49,12 +46,7 @@ The example JSON configuration can be overridden either by modifying conf/exchan
             }
         }
     ]
-}
-Environment Variables
-Name	Description
-EXCHANGE_POLICY_JSON_CONFIG_PATH	Absolute filesystem path to JSON configuration for this service (see conf/exchangepolicy_json.json)
-
-
+}``
 
 ## Exchange an access token or id token using OpenAM Policy backend
 Token Exchange Policy - OpenAM
@@ -65,56 +57,13 @@ The Settings in the next section will map OpenAM Policy attributes to expected/o
 Support for delegation using the may_act claim in the incoming subject_token is also provided. The actor_token and actor_token_type must be provided with a matching sub claim, and specific configurations in AM must be completed. These are noted below.
 
 Settings
-The OpenAM Token-Exchange Policy implementation can be configured by changing settings in the conf/exchangepolicy_openam.json file.
+The environment variables are included in the YAML file.
 
-{
-    // Credentials for an OpenAM "subject" account with permission to access the OpenAM policy endpoint
-    "authSubjectId" : "&{EXCHANGE_OPENAM_AUTH_SUBJECT_ID|exchange_svc}",
-    "authSubjectPassword" : "&{EXCHANGE_OPENAM_AUTH_SUBJECT_PASSWORD|exchange_svc}",
-
-    // URL for the OpenAM authentication endpoint, without query parameters
-    "authUrl" : "&{EXCHANGE_OPENAM_AUTH_URL|http://localhost:8080/openam/json/realms/root/authenticate}",
-
-    // URL for the OpenAM policy-endpoint, without query parameters
-    "policyUrl" : "&{EXCHANGE_OPENAM_POLICY_URL|http://localhost:8080/openam/json/realms/root/policies}",
-
-    // OpenAM Policy-Set ID
-    "policySetId" : "&{EXCHANGE_OPENAM_POLICY_SET_ID|resource_policies}",
-
-    // OpenAM policy-endpoint response-attribute field-name containing "audience" values
-    "audienceAttribute" : "&{EXCHANGE_OPENAM_POLICY_AUDIENCE_ATTR|aud}",
-
-    // OpenAM policy-endpoint response-attribute field-name containing "scope" values
-    "scopeAttribute" : "&{EXCHANGE_OPENAM_POLICY_SCOPE_ATTR|scp}",
-
-    // OpenAM policy-endpoint response-attribute field-name containing the token's "subject" value
-    "subjectAttribute" : "&{EXCHANGE_OPENAM_POLICY_SUBJECT_ATTR|uid}",
-
-    // (optional) OpenAM policy-endpoint response-attribute field-name containing "expires-in-seconds" values
-    "expiresInSecondsAttribute" : "&{EXCHANGE_OPENAM_POLICY_EXPIRES_IN_SEC_ATTR|}",
-                                                                                  
-    // Set to "true" to copy additional OpenAM policy-endpoint response-attributes into generated token claims
-    "copyAdditionalAttributes" : "&{EXCHANGE_OPENAM_POLICY_COPY_ADDITIONAL_ATTR|true}"
-}
 Note that the "/realms/root" support in the URLs above is added for the 6.0 release.
 
-Environment Variables
-The following are environment variables that can be used to populate fields in conf/exchangepolicy_openam.json,
-
-Name	Description
-EXCHANGE_OPENAM_AUTH_SUBJECT_ID	ID/username for an OpenAM "subject" account with permission to access the OpenAM policy endpoint (default: exchange_svc)
-EXCHANGE_OPENAM_AUTH_SUBJECT_PASSWORD	Password for an OpenAM "subject" account with permission to access the OpenAM policy endpoint (default: exchange_svc)
-EXCHANGE_OPENAM_AUTH_URL	URL for the OpenAM authentication endpoint, without query parameters (default: http://localhost:8080/openam/json/authenticate)
-EXCHANGE_OPENAM_POLICY_URL	URL for the OpenAM policy-endpoint, without query parameters (default: http://localhost:8080/openam/json/realms/root/policies)
-EXCHANGE_OPENAM_POLICY_SET_ID	OpenAM Policy-Set ID (default: resource_policies)
-EXCHANGE_OPENAM_POLICY_AUDIENCE_ATTR	OpenAM policy-endpoint response-attribute field-name containing "audience" values (default: aud)
-EXCHANGE_OPENAM_POLICY_SCOPE_ATTR	OpenAM policy-endpoint response-attribute field-name containing "scope" values (default: scp)
-EXCHANGE_OPENAM_POLICY_SUBJECT_ATTR	OpenAM policy-endpoint response-attribute field-name containing the token's "subject" value (default: uid)
-EXCHANGE_OPENAM_POLICY_ALLOWED_ACTORS_ATTR	OpenAM policy-endpoint response-attribute field-name containing a list of allowed actors (default: allowedActors)
-EXCHANGE_OPENAM_POLICY_EXPIRES_IN_SEC_ATTR	(Optional) OpenAM policy-endpoint response-attribute field-name containing "expires-in-seconds" values
-EXCHANGE_OPENAM_POLICY_COPY_ADDITIONAL_ATTR	Set to "true" to copy additional OpenAM policy-endpoint response-attributes into generated token claims, or "false" to disable this feature (default: "true")
-Configure OpenAM
+## Configure OpenAM
 In order to use the OpenAM Token Exchange Policy API implementation, some minimal configuration steps must be followed for OpenAM itself.
+The attached amster configuration already includes the configurations needed.
 
 Copy the OpenAM WAR file into the Tomcat Application Server's /webapps directory, and rename file to openam.war
 Execute catalina start from the command line
@@ -156,7 +105,7 @@ return new UserInfoClaims([ "may_act": mayact ], ["openid":["may_act"]]) '''
 NOTE: A token-exchange request can specify one or more resource and/or audience fields, but OpenAM considers any/all resources/audiences in the request to be a "resource" of some "resource type". By default the URL resource-type is supported in OpenAM, so you may need to create additional resource-types within OpenAM to support a non-URL audience values.
 
 CURL Examples
-The following examples assume that the jq tool is installed. Ports may need to be changed in the CURL commands.
+The following examples assume that the jq tool is installed. The attached POSTMAN collection includes all examples.
 
 Generate an OpenAM token and save it to a file. The OpenAM example_user account is used in the example, but any OpenAM SSO account could be used.
 
@@ -170,11 +119,6 @@ curl -s --request POST \
   "http://localhost:8080/openam/json/authenticate" > openam_sso_token.json
 Verify that both microservice-authn and microservice-token-exchange are using the same JSON Web Key for token signing/validation, by setting the following environment variables before starting the services,
 
-- microservice-authn
-export TOKEN_SIGNATURE_JWK_BASE64=ewogICAgImtpZCIgOiAibXlfaG1hY19rZXkiLAogICAgImt0eSIgOiAiT0NUIiwKICAgICJhbGciIDogIkhTMjU2IiwKICAgICJrIiA6ICJGZEZZRnpFUndDMnVDQkI0NnBaUWk0R0c4NUx1alI4b2J0LUtXUkJJQ1ZRIgp9Cg==
-
-- microservice-token-exchange
-export ISSUER_JWK_JSON_JWK_BASE64=$TOKEN_SIGNATURE_JWK_BASE64
 Next, generate a token with microservice-authn, and the example "client3" account that has "exchange" scope (see "requiredBearerScope" setting in conf/service.json), to use as a Authorization Bearer token,
 
 - microservice-authn
@@ -182,7 +126,7 @@ curl -k -u client3:client3 -X POST \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "grant_type=client_credentials" \
     -d "scope=exchange" \
-    "http://localhost:8080/service/access_token" > bearer_tok.json
+    "http://19.168.99.100:30101/service/access_token" > bearer_tok.json
 Use the Bearer token to authenticate with microservice-token-exchange's endpoint, and pass in the OpenAM token generated previously,
 
 export EX_BEARER_TOKEN=$(cat bearer_tok.json | jq -r .access_token)
@@ -197,7 +141,7 @@ curl -k \
     -d "subject_token_type=urn:ietf:params:oauth:token-type:access_token" \
     -H "Authorization: Bearer $EX_BEARER_TOKEN" \
     -H "Content-Type: application/x-www-form-urlencoded" \
-    -X POST "http://localhost:8080/service/tokensts" | jq
+    -X POST "http://19.168.99.100:30104/service/tokensts" | jq
 The output should look something like,
 
 {
@@ -292,38 +236,26 @@ Token-Exchange Policy implementation, which performs a simple token exchange, fo
 Implementation and usage notes:
 
 The Bearer token, used to authenticate, must have scope claims for both token exchange and token introspection
-Exchange request must have requested_token_type=urn:ietf:params:oauth:token-type:jwt
+Exchange request must have `requested_token_type`=urn:ietf:params:oauth:token-type:jwt
 The audience and resource parameters, in the exchange request, are currently ignored and not applicable
-If the given subject_token can be introspected, then a JWT is returned containing the claims of the subject_token
-When the subject_token does not contain the sub, aud, and scope or scp claims, they are given a N_A value
-If the exchange request specifies one or more optional scope parameters, those scopes must exist in the subject_token
-The optional exchange request actor_token must be a JWT signed by one of the keys in the configured Issuer JSON Web Key Store
-If an actor_token is specified, the optional may_act claim will be respected if found in the subject_token
+If the given `subject_token` can be introspected, then a JWT is returned containing the claims of the `subject_token`
+When the `subject_token` does not contain the sub, aud, and scope or scp claims, they are given a N_A value
+If the exchange request specifies one or more optional scope parameters, those scopes must exist in the `subject_token`
+The optional exchange request `actor_token` must be a JWT signed by one of the keys in the configured Issuer JSON Web Key Store
+If an `actor_token` is specified, the optional may_act claim will be respected if found in the `subject_token`
+
 Settings
 The conf/resources/exchangepolicy_jwt.json configuration file requires an "introspectUrl", which points to a microservice-token-validation endpoint, and the "issuerJsonWebKeyStore" field, which is currently only used to validate the optional actor_token's signature.
 
 {
     // URL to Token Introspection service
-    "introspectUrl" : "&{EXCHANGE_JWT_INTROSPECT_URL|http://localhost:8080/service/introspect}",
+    "introspectUrl" : "&{EXCHANGE_JWT_INTROSPECT_URL|http://19.168.99.100:30103/service/introspect}",
 
     // Comma-separated names of Issuer JSON Web Key Store implementations, which maps OAuth token issuers to JSON Web Keys
     // NOTE: this is currently only used to validate the optional actor_token
     "issuerJsonWebKeyStore" : "&{ISSUER_JWK_STORE|json}"
 }
-Environment Variables
-Name	Description
-EXCHANGE_JWT_INTROSPECT_URL	URL to Token Introspection service (see conf/exchangepolicy_jwt.json)
-ISSUER_JWK_STORE	Comma-separated, priority ordered list of Issuer JSON Web Key Store implementations to use, which is json by default (See conf/service.json).
-Example Usage
-The following environment variables are useful in configuring the Token Exchange Microservice to utilize the JWT Token Exchange policy:
 
-- These environment variables are provided by the YAML file (no need to set explicitly)
-export TOKEN_SIGNATURE_JWK_BASE64=ewogICAgImtpZCIgOiAibXlfaG1hY19rZXkiLAogICAgImt0eSIgOiAiT0NUIiwKICAgICJhbGciIDogIkhTMjU2IiwKICAgICJrIiA6ICJGZEZZRnpFUndDMnVDQkI0NnBaUWk0R0c4NUx1alI4b2J0LUtXUkJJQ1ZRIgp9Cg==
-export ISSUER_JWK_JSON_JWK_BASE64=$TOKEN_SIGNATURE_JWK_BASE64
-
-export EXCHANGE_JWT_INTROSPECT_URL="http://192.168.99.100:30103/service/introspect"
-
-TOKEN_EXCHANGE_POLICIES="jwt,json" token-exchange-microservice/bin/startup.sh jpda
 Use microservice-authn to generate bearer and subject tokens:
 
 - the example client3 account has both exchange and introspect scopes
@@ -367,21 +299,7 @@ Open Policy Agent (OPA) file backed Token-Exchange Policy implementation, which 
 Settings
 This Token-Exchange Policy implementation matches requested resource "patterns" to a given "audience", which will appear in the generated token. Alternatively, if the token-exchange-request specifies an "audience" but no resource URIs, then this policy will match that audience. Policy rules are not mutually exclusive, in that multiple policies could match for requested resources/audiences, and the result will be merged together for the generated token.
 
-The JSON configuration file for this module is located at conf/exchangepolicy_opa.json and is shown below:
-
-{
-    // Comma-separated names of Issuer JSON Web Key Store implementations, which maps OAuth token issuers to JSON Web Keys
-    "issuerJsonWebKeyStore" : "&{ISSUER_JWK_STORE|json}",
-
-    // Open Policy Agent URL for the token exchange policy
-    "url":"&{EXCHANGE_POLICY_OPA_URL|http://localhost:8181/v0/data/forgerock/exchange/match}"
-}
-Environment Variables
-Name	Description
-ISSUER_JWK_STORE	Comma-separated, priority ordered list of Issuer JSON Web Key Store implementations to use, which is json by default (See conf/service.json).
-EXCHANGE_POLICY_OPA_URL	Open Policy Agent URL for the token exchange policy, which usually runs as a local service.
-Open Policy Agent
-The Open Source Open Policy Agent project possess many powerful features, such as the Rego scripting language, based on Datalog, and HTTP capabilities which make it possible to manage policies as part of your overall microservice infrastructure. This Token Exchange module is opinionated about the JSON payload that is sent to OPA and the JSON response from OPA, but there is great flexibility in how policy rules are evaluated inside OPA itself.
+The JSON configuration file for this module is located at conf/exchangepolicy_opa.json
 
 An example HTTP request JSON payload, sent to OPA for evaluation, is:
 
