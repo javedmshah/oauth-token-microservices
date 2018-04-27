@@ -69,7 +69,7 @@ introspected by the configured Token Introspection service.
 
 Specification for this implementation:
 µTE stands for Token Exchange microservice.
-
+```text
 Case 1 : Stateful OAuth2 Token -> Stateless JWT
 Flow: stateful AT to µTE-> µTE validates AT by proxy to AS->µTE mints new JWT (signs with own key).
 a) Client 1 presents stateful AT to µTE service along with its own bearer token
@@ -82,7 +82,7 @@ a) Client 1 presents stateless AT to µTE service along with its own bearer toke
 b) µTE service validates AT after validating signature
 c) µTE service mints new stateless JWT using its own private key with contents of AT and returns stateless JWT.
 Note: The µTE will sign new JWT with its own key. Client 1 would receive the newly minted JWT, and eventually use it with Client 2 - and Client2 must call token validator (µTV) to validate (therefore µTV must be in possession of pub key as well).
-
+```
 There is no "resource" or "audience" validation requested along with a request to exchange an AM AT token with a stateless JWT. And there is no policy evaluation either.
 
 Implementation and usage notes:
@@ -106,7 +106,7 @@ validate the optional `actor_token`'s signature.
 ```json
 {
     // URL to Token Introspection service
-    "introspectUrl" : "&{EXCHANGE_JWT_INTROSPECT_URL|http://localhost:8080/service/introspect}",
+    "introspectUrl" : "&{EXCHANGE_JWT_INTROSPECT_URL|http://192.68.99.100:30103/service/introspect}",
 
     // Comma-separated names of Issuer JSON Web Key Store implementations, which maps OAuth token issuers to JSON Web Keys
     // NOTE: this is currently only used to validate the optional actor_token
