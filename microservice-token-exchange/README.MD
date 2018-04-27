@@ -105,34 +105,15 @@ return new UserInfoClaims([ "may_act": mayact ], ["openid":["may_act"]]) '''
 NOTE: A token-exchange request can specify one or more resource and/or audience fields, but OpenAM considers any/all resources/audiences in the request to be a "resource" of some "resource type". By default the URL resource-type is supported in OpenAM, so you may need to create additional resource-types within OpenAM to support a non-URL audience values.
 
 CURL Examples
-The following examples assume that the jq tool is installed. The attached POSTMAN collection includes all examples.
+The attached POSTMAN collection includes all examples.
 
-Generate an OpenAM token and save it to a file. The OpenAM example_user account is used in the example, but any OpenAM SSO account could be used.
+Generate the AM and BEARER tokens with POSTMAN, and the example "client3" account that has "exchange" scope to use as a Authorization Bearer token.
 
-export OPENAM_USERNAME=example_user
-export OPENAM_PASSWORD=example_user
-
-curl -s --request POST \
-  --header "X-OpenAM-Username: $OPENAM_USERNAME" \
-  --header "X-OpenAM-Password: $OPENAM_PASSWORD" \
-  --header "Content-Type: application/json" \
-  "http://localhost:8080/openam/json/authenticate" > openam_sso_token.json
-Verify that both microservice-authn and microservice-token-exchange are using the same JSON Web Key for token signing/validation, by setting the following environment variables before starting the services,
-
-Next, generate a token with microservice-authn, and the example "client3" account that has "exchange" scope (see "requiredBearerScope" setting in conf/service.json), to use as a Authorization Bearer token,
-
-- microservice-authn
-curl -k -u client3:client3 -X POST \
-    -H "Content-Type: application/x-www-form-urlencoded" \
-    -d "grant_type=client_credentials" \
-    -d "scope=exchange" \
-    "http://19.168.99.100:30101/service/access_token" > bearer_tok.json
 Use the Bearer token to authenticate with microservice-token-exchange's endpoint, and pass in the OpenAM token generated previously,
-
-export EX_BEARER_TOKEN=$(cat bearer_tok.json | jq -r .access_token)
-export EX_SUBJECT_TOKEN=$(cat openam_sso_token.json | jq -r .tokenId)
+POSTMAN includes a few examples of this but you could modify the collection as needed.
 
 - specifies two resources
+``
 curl -k \
     -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
     -d "resource=http://resource1.example.com/thing/99" \
@@ -142,17 +123,18 @@ curl -k \
     -H "Authorization: Bearer $EX_BEARER_TOKEN" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -X POST "http://19.168.99.100:30104/service/tokensts" | jq
+``    
 The output should look something like,
-
+``
 {
   "access_token": "eyJ0eXAiOiJKV1QiLCJ6aXAiOi...",
   "issued_token_type": "urn:ietf:params:oauth:token-type:access_token",
   "token_type": "Bearer",
   "expires_in": 3600,
   "scope": "resource_write resource_read"
-}
+}``
 And if we were to introspect the token, we might see,
-
+``
 {
    "sub":"example_user",
    "aud":"resource1",
@@ -163,11 +145,11 @@ And if we were to introspect the token, we might see,
    "iss":"https://example.com",
    "exp":1495223381,
    "iat":1495219781
-}
+}``
 Delegation Support
 
 The subject_token includes may_act as shown:
-
+``
 {
     "at_hash": "EpGvTWe0WBJGJEdgUF2-2w",
     "sub": "Alice",
@@ -184,9 +166,9 @@ The subject_token includes may_act as shown:
     "exp": 1523087706,
     "tokenType": "JWTToken",
     "iat": 1523084106
-}
+}``
 The actor_token is:
-
+``
 {
     "at_hash": "vMH7NUGN9cCADdI_Dp5bSg",
     "sub": "Bob",
@@ -200,7 +182,7 @@ The actor_token is:
     "exp": 1523087704,
     "tokenType": "JWTToken",
     "iat": 1523084104
-}
+}``
 An example of using delegation is as follows: curl -k
 -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" 
 -d "resource=http://images.example.com:/" 
@@ -213,7 +195,7 @@ An example of using delegation is as follows: curl -k
 -X POST "http://localhost:38080/service/tokensts" | jq
 
 If the AM policy check is successful, the returned JWT access_ttoken would be:
-
+``
 {
     "sub": "user.0",
     "aud": "example.com",
@@ -228,7 +210,7 @@ If the AM policy check is successful, the returned JWT access_ttoken would be:
     "exp": 1523382895,
     "iat": 1523379295
 }
-
+``
 ## JWT
 Token Exchange Policy - JWT
 Token-Exchange Policy implementation, which performs a simple token exchange, for a JWT, given any token that can be introspected by the configured Token Introspection service (e.g., microservice-token-validation project).
@@ -246,7 +228,7 @@ If an `actor_token` is specified, the optional may_act claim will be respected i
 
 Settings
 The conf/resources/exchangepolicy_jwt.json configuration file requires an "introspectUrl", which points to a microservice-token-validation endpoint, and the "issuerJsonWebKeyStore" field, which is currently only used to validate the optional actor_token's signature.
-
+``
 {
     // URL to Token Introspection service
     "introspectUrl" : "&{EXCHANGE_JWT_INTROSPECT_URL|http://19.168.99.100:30103/service/introspect}",
@@ -255,22 +237,11 @@ The conf/resources/exchangepolicy_jwt.json configuration file requires an "intro
     // NOTE: this is currently only used to validate the optional actor_token
     "issuerJsonWebKeyStore" : "&{ISSUER_JWK_STORE|json}"
 }
+``
+Use POSTMAN to generate bearer and subject tokens:
 
-Use microservice-authn to generate bearer and subject tokens:
-
-- the example client3 account has both exchange and introspect scopes
-export AUTH_TOKEN=$(curl -k -u client3:client3 -X POST \
-  -d "grant_type=client_credentials" \
-  -d "scope=exchange%20introspect" \
-  "http://192.168.99.100:30101/service/access_token" \
-  | jq -r .access_token)
-
-export SUBJECT_TOKEN=$(curl -k -u client2:client2 -X POST \
-  -d "grant_type=client_credentials" \
-  "http://192.168.99.100:30101/service/access_token" \
-  | jq -r .access_token)
 Exchange subject_token for a JWT:
-
+``
 curl -k \
     -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
     -d "subject_token=$SUBJECT_TOKEN" \
@@ -279,8 +250,9 @@ curl -k \
     -H "Authorization: Bearer $AUTH_TOKEN" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -X POST "http://localhost:8080/service/tokensts" | jq
+``
 Exchange subject_token, with optional actor_token specified, for a JWT:
-
+``
 curl -k \
     -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
     -d "subject_token=$SUBJECT_TOKEN" \
@@ -291,7 +263,7 @@ curl -k \
     -H "Authorization: Bearer $AUTH_TOKEN" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -X POST "http://localhost:8080/service/tokensts" | jq
-    
+``   
 ## Token exchange using Open Policy Agent (opa)
 Token Exchange Policy - Open Policy Agent (OPA)
 Open Policy Agent (OPA) file backed Token-Exchange Policy implementation, which provides logic that decides whether a token-exchange is allowed and what will appear in the generated token.
@@ -302,7 +274,7 @@ This Token-Exchange Policy implementation matches requested resource "patterns" 
 The JSON configuration file for this module is located at conf/exchangepolicy_opa.json
 
 An example HTTP request JSON payload, sent to OPA for evaluation, is:
-
+``
 {
   "resources" : [
     "http://resource1.example.com/endpoint"
@@ -310,12 +282,12 @@ An example HTTP request JSON payload, sent to OPA for evaluation, is:
   "audiences" : [
     "resource2"
   ]
-}
+}``
 This example requests a resource name, which is associated with "resource1", and also explicitly requests access to "resource2".
 
 exchangePolicy.json
 Example exchangePolicy.json file, which defines the policy rule data inside OPA:
-
+``
 {
     "resources" : [
         {
@@ -350,7 +322,7 @@ Example exchangePolicy.json file, which defines the policy rule data inside OPA:
             ]
         }
     ]
-}
+}``
 If you are familiar with the JSON Token Exchange Policy module, which is the default exchange policy implementation, you will notice that the JSON schema above is extremely similar. One notable difference is that the "patterns" in this case are full fledged regular expressions, instead of the simpler pattern language assumed by the other module. Since OPA was written in the Go programming language, we assume that the regular expressions are those valid in Go (see re2 syntax).
 
 Although we show URI patterns above, resources are not restricted to be URIs. If at least one resource pattern matches, or the audience matches, then then rule matches. Remember that a token exchange request may consist of requested resources, audiences, or both. This module considers it an error if neither resources or audiences are in the token exchange request.
@@ -364,16 +336,12 @@ allowedActors (optional) : subjects of callers (bearer token) that can be exchan
 additionalClaims (optional) : which are ad-hoc claims added to the token and cannot override mandatory OAuth 2 claims
 exchangePolicy.rego
 Example exchangePolicy.rego file, which defines the logic of the exchange policy:
-
+``
 package forgerock.exchange
-
 import data.resources
 
-/*
-* RUN IN SERVER MODE:
-*
-* ./opa run --server  exchangePolicy.json exchangePolicy.rego
-*/
+// ./opa run --server  exchangePolicy.json exchangePolicy.rego
+
 
 lookupByResourcePattern = output {
   z = [r | re_match(resources[i].patterns[_], input.resources[_]); resources[i] = r]
@@ -386,13 +354,14 @@ lookupByAudience = output {
   // convert array into set
   output = {x | x = z[_]}
 }
-
-- curl -H "Content-Type: application/json" --request POST --data-binary "@exchangeInput.json" http://localhost:8181/v0/data/forgerock/exchange/match
+``
+`` curl -H "Content-Type: application/json" --request POST --data-binary "@exchangeInput.json" http://localhost:8181/v0/data/forgerock/exchange/match
 match = output {
   a = lookupByAudience
   b = lookupByResourcePattern
   output = a | b
 }
+``
 This example Rego file supports matching of items inside the "resources" array, shown above in the example exchangePolicy.json file, with requested audiences and/or resources. The important point is that the response from the match rule returns an array of matching items from the "resources" array. Other than the restriction on the JSON request and JSON response formats, you can perform whatever complex evaluations are necessary in your own Rego files.
 
 Run OPA Server
@@ -401,7 +370,7 @@ Run the OPA server locally on the default port (8181):
 ./opa run --server  exchangePolicy.json exchangePolicy.rego
 HTTP Request from Token Exchange Microservice
 Example HTTP request payload from the Token Exchange Microservice, which you could save to exchangeInput.json:
-
+``
 {
   "resources" : [
     "http://resource1.example.com/endpoint"
@@ -410,9 +379,11 @@ Example HTTP request payload from the Token Exchange Microservice, which you cou
     "resource2"
   ]
 }
+``
 Issue the example HTTP request via:
-
+``
 curl -H "Content-Type: application/json" \
     --request POST \
     --data-binary "@exchangeInput.json" \
     http://localhost:8181/v0/data/forgerock/exchange/match
+``
