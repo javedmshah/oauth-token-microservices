@@ -14,8 +14,7 @@ This Token-Exchange Policy implementation matches requested resource URI "patter
 
 A sample JSON policy looks like:
 
-``{
-    
+``    
     "resources" : [
         {
             // patterns to match against the requested resource (either exact-match, or prefix-match up to first *)
@@ -46,7 +45,7 @@ A sample JSON policy looks like:
             }
         }
     ]
-}``
+``
 
 ## Exchange an access token or id token using OpenAM Policy backend
 Token Exchange Policy - OpenAM
