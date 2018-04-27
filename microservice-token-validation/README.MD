@@ -14,34 +14,21 @@ Here we use the minikube ip and the netPort defined in the YAML:
 curl -k -u info:info --request GET --url 'http://192.68.99.100:30103/validation/info/ping'
 To exercise the token introspection endpoint:
 
-These commands are only provided for documentation purposes. The attached POSTMAN collection in this repository provides all examples described here.
+The attached POSTMAN collection in this repository provides examples to generate the BEARER and other tokens described here.
 
-Generate a token to use as an Authorization Bearer token. Use microservice-authn and the example "client3" account that has "introspect" scope (see "requiredBearerScope" setting in conf/service.json). Also use the "client1" account to generate a token to introspect. The following CURL commands will save these tokens to files.
-- microservice-authn
-curl -k -u client3:client3 -X POST \
-    -H "Content-Type: application/x-www-form-urlencoded" \
-    -d "grant_type=client_credentials" \
-    -d "scope=introspect" \
-    "http://192.68.99.100:30103/service/access_token" > bearer_tok.json
+Generate a token to use as an Authorization Bearer token. Use example "client3" account that has "introspect" scope. Also use the "client1" account to generate a token to introspect. 
 
-curl -k -u client1:client1 -X POST \
-    -H "Content-Type: application/x-www-form-urlencoded" \
-    -d "grant_type=client_credentials" \
-    "http://192.68.99.100:30103/service/access_token" > introspect_tok.json
-Use the Bearer token to authenticate with the microservice-token-validation introspection endpoint and pass in the other token to be introspected:
-export BEARER_TOKEN=$(cat bearer_tok.json | jq -r .access_token)
-export INTROSPECT_TOKEN=$(cat introspect_tok.json | jq -r .access_token)
-
-- microservice-token-validation
+> microservice-token-validation
 curl -k \
     -d "token_type_hint=access_token&token=$INTROSPECT_TOKEN" \
     -H "Authorization: Bearer $BEARER_TOKEN" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -X POST "http://192.68.99.100:30103/service/introspect" | jq
+
 Settings
 Token Signature Verification
-The "issuerJsonWebKeyStore" field in token-validation-zip/src/main/resources/conf/service.json allows you to configure which JSON Web Key (JWK) settings to use when verifying token signatures for specific OAuth 2.0 Token Issuers. In the following example, the default Issuer JSON Web Key Store is the json implementation, which is defined by a JSON configuration file. See the token-validation-issuer-jwk-store-json module README.md file for additional configuration instructions.
-
+The "issuerJsonWebKeyStore" field in token-validation-zip/src/main/resources/conf/service.json allows you to configure which JSON Web Key (JWK) settings to use when verifying token signatures for specific OAuth 2.0 Token Issuers. In the repository example, the default Issuer JSON Web Key Store is the json implementation, which is defined by a JSON configuration file. 
+```
 {
     // Comma-separated names of Issuer JSON Web Key Store implementations, which maps OAuth token issuers to JSON Web Keys
     "issuerJsonWebKeyStore" : "&{ISSUER_JWK_STORE|json}",
@@ -52,22 +39,24 @@ The "issuerJsonWebKeyStore" field in token-validation-zip/src/main/resources/con
     // scope required, on bearer token, to perform token introspection
     "requiredBearerScope" : "&{INTROSPECTION_REQUIRED_SCOPE|introspect}"
 }
+```
 Likewise, the "introspectionServices" field configures one or more Token Introspection API implementations by setting the value to a comma-separated list of implementation names. Each implementation is given a chance to handle the token, in given order, until an implementation successfully handles the token. An error response occurs if no implementation successfyly introspects a given token.
 
 The following implementations are provided:
-
+```
 json : Configured by a JSON file (See the token-validation-introspect-json module README.md file.)
 openam : Proxies introspect calls to OpenAM (See the token-validation-introspect-openam module README.md file.)
+```
 Environment Variables
 The application is configured with example settings by default. Oftentimes you will need to provide values for the following environment variables for more complex demonstrations or for production use.
 
-## Incoming Transaction ID
+> Incoming Transaction ID
 Each incoming HTTP request is assigned a transaction ID, for audit logging purposes, which by default is a UUID. ForgeRock Microservices, and other products (e.g., OpenAM), support propagation of a transaction ID between point-to-point service calls. To enable reading a transaction ID from the X-ForgeRock-TransactionId HTTP header, you must enable the following system property (defined in conf/system.properties):
 
-org.forgerock.http.TrustTransactionHeader=true
-To enable this feature, set the TRUST_TRANSACTION_ID_HEADER environment variable before application startup:
+`org.forgerock.http.TrustTransactionHeader=true`
+To enable this feature, set the TRUST_TRANSACTION_ID_HEADER environment variable in the YAML file if needed:
 
-export TRUST_TRANSACTION_ID_HEADER=true
+`export TRUST_TRANSACTION_ID_HEADER=true`
 
 ## Prometheus
 We provide a Prometheus endpoint which is convenient for monitoring published metrics. Additional details and alternative metrics formats are described in the core-metrics module of the microservice-core project.
@@ -79,7 +68,7 @@ global:
   external_labels:
     monitor: 'my_prometheus'
 
-https://prometheus.io/docs/operating/configuration/#scrape_config
+>https://prometheus.io/docs/operating/configuration/#scrape_config
 scrape_configs:
   - job_name: 'microservice-token-validation'
     scrape_interval: 5s
@@ -101,19 +90,20 @@ brew install prometheus
 prometheus -config.file=token-validation-samples/metrics/prometheus.yml
 Test the connection via the basic Prometheus website at http://localhost:9090/.
 
-Grafana
+## Grafana
 Once you are collecting metrics with Prometheus, you can generate graphs with Grafana.
 
 To install Grafana via Homebrew:
 
 brew update
 brew install grafana
-
+```
 grafana-server --config=/usr/local/etc/grafana/grafana.ini \
   --homepath /usr/local/share/grafana \
   cfg:default.paths.logs=/usr/local/var/log/grafana \
   cfg:default.paths.data=/usr/local/var/lib/grafana \
   cfg:default.paths.plugins=/usr/local/var/lib/grafana/plugins
+```
 You can then access the Grafana website at http://localhost:3000/, add Prometheus as a datasource, and use the following example queries to build your graphs:
 
-rate(introspectRequests_total{job="microservice-token-validation"}[1m]) will graph Introspect Requests per Second
+`rate(introspectRequests_total{job="microservice-token-validation"}[1m])` will graph Introspect Requests per Second
