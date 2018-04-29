@@ -94,6 +94,7 @@ The `actor_token` is:
 
 
 An example of using delegation is as follows:
+```text
 curl -k     
     -d "grant_type=urn:ietf:params:oauth:grant-type:token-exchange" \
     -d "resource=http://images.example.com:*/*" \
@@ -104,7 +105,7 @@ curl -k
     -H "Authorization: Bearer $EX_BEARER_TOKEN" \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -X POST "http://localhost:38080/service/tokensts" | jq
-
+```
 If the AM policy check is successful, the returned JWT accesst_token would be:
 
 ```json
