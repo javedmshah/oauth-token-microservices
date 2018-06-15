@@ -85,10 +85,11 @@ scrape_configs:
 ```
 To install and run on OSX, via Homebrew:
 
-```brew update
-brew install prometheus```
-
-```prometheus -config.file=token-validation-samples/metrics/prometheus.yml```
+```
+brew update
+brew install prometheus
+prometheus -config.file=token-validation-samples/metrics/prometheus.yml
+```
 Test the connection via the basic Prometheus website at http://localhost:9090/.
 
 ## Grafana
